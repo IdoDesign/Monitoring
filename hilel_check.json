@@ -28,6 +28,19 @@
                     "port": 873
                 }
             ]
+        },
+        {
+            "hostname": "192.168.0.1",
+            "description": "Unifi Dream Machine",
+            "checks": [
+                {
+                    "name": "Ping UDM",
+                    "description": "ping Unifi Dream Machine at Hilel 27",
+                    "type": "icmp",
+                    "wait_time": 1,
+                    "attempts": 5
+                }
+            ]
         }
     ]
 }
