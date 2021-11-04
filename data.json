@@ -1,0 +1,25 @@
+{
+    "hosts": [
+        {
+            "hostname": "google.com",
+            "description": "Google",
+            "checks": [
+                {
+                    "name": "Ping Google",
+                    "description": "ping google.com",
+                    "type": "icmp",
+                    "wait_time": 4,
+                    "attempts": 5
+                },
+                {
+                    "name": "HTTPS Google",
+                    "description": "check https avaylability google.com",
+                    "type": "tcp",
+                    "wait_time": 4,
+                    "attempts": 5,
+                    "port": 443
+                }
+            ]
+        }
+    ]
+}

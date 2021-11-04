@@ -1,0 +1,33 @@
+{
+    "hosts": [
+        {
+            "hostname": "192.168.0.127",
+            "description": "TrueNAS",
+            "checks": [
+                {
+                    "name": "Ping TrueNAS",
+                    "description": "ping truenas server at Hilel 27",
+                    "type": "icmp",
+                    "wait_time": 1,
+                    "attempts": 5
+                },
+                {
+                    "name": "HTTPS TrueNAS",
+                    "description": "check https avaylability for TrueNAS",
+                    "type": "tcp",
+                    "wait_time": 5,
+                    "attempts": 5,
+                    "port": 443
+                },
+                {
+                    "name": "rsync TrueNAS",
+                    "description": "check rsync listener at FreeNAS",
+                    "type": "tcp",
+                    "wait_time": 2,
+                    "attempts": 5,
+                    "port": 873
+                }
+            ]
+        }
+    ]
+}
