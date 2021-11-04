@@ -6,7 +6,7 @@
             "checks": [
                 {
                     "name": "Ping TrueNAS",
-                    "description": "ping truenas server at Hilel 27",
+                    "description": "ping truenas server",
                     "type": "icmp",
                     "wait_time": 1,
                     "attempts": 5
@@ -35,7 +35,7 @@
             "checks": [
                 {
                     "name": "Ping UDM",
-                    "description": "ping Unifi Dream Machine at Hilel 27",
+                    "description": "ping Unifi Dream Machine",
                     "type": "icmp",
                     "wait_time": 1,
                     "attempts": 5
