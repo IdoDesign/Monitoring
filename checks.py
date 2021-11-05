@@ -1,4 +1,4 @@
-from os import register_at_fork, wait
+import logging
 import time
 import utils
 
@@ -32,6 +32,8 @@ class Check:
         Then, if the check is successfull, changes the staus back and sends an email.
 
         """
+        logging.info(f"Started monitoring {self.name}")
+
         while True:
             if self.up:
                 if self.single_check():
@@ -39,6 +41,7 @@ class Check:
                 else:
                     self.count += 1
                     if self.count > self.attempts:
+                        logging.error("{} status changed to down, please check {}".format(self.name, self.hostname))
                         utils.send_mail("{} is down".format(self.name),"{} failed 5 times, please check {}".format(self.name, self.hostname))
                         self.up = False
                         self.count = 0
@@ -48,6 +51,7 @@ class Check:
                 if self.single_check():
                     self.count += 1
                     if self.count > self.attempts:
+                        logging.error("{} status changed to up".format(self.name))
                         utils.send_mail("{} is up".format(self.name),"{} succeeded 5 times".format(self.name, self.hostname))
                         self.up = True
                         self.count = 0

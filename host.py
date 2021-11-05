@@ -1,4 +1,4 @@
-import threading
+import threading, logging
 from checks import *
 
 
@@ -61,5 +61,6 @@ class Host:
             check.single_check()
 
     def check_thereaded(self):
+        logging.info(f"Started monitoring {self.hostname}")
         for check in self.checks:
             threading.Thread(target=check.check).start()
