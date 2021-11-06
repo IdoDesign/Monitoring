@@ -2,7 +2,7 @@ import socket
 import os
 import smtplib
 import ssl
-
+import logging
 from configparser import ConfigParser
 
 
@@ -66,7 +66,11 @@ def send_mail(subject: str, message: str):
     context = ssl.create_default_context()
 
     with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
-        server.login(mail_config['SENDER'],
-                     mail_config['PASSWORD'])
-        server.sendmail(mail_config['SENDER'], mail_config['RECEIVER'],
-                        f"Subject: {subject} \n{message}\n\n Monitor.ido")
+        try:
+            server.login(mail_config['SENDER'], mail_config['PASSWORD'])
+            server.sendmail(mail_config['SENDER'], mail_config['RECEIVER'],
+                    f"Subject: {subject} \n{message}\n\n Monitor.ido")
+
+        except smtplib.SMTPAuthenticationError() as e:
+            logging.error("Authentication to SMTP server failed, please check your config file")
+        
