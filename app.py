@@ -3,7 +3,6 @@ import threading
 import logging
 import utils
 from configparser import ConfigParser
-from host import Host
 
 
 def main(filepath):

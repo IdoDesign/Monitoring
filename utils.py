@@ -28,7 +28,6 @@ def ping(hostname: str) -> bool:
     else:
         return False
 
-
 def tcp_ping(hostname: str, port: int) -> bool:
     """openes a tcp socket to Hostname in given port"
 
@@ -48,7 +47,6 @@ def tcp_ping(hostname: str, port: int) -> bool:
         return False
     finally:
         sock.close()
-
 
 def send_mail(subject: str, message: str):
     """Sends plain text e-mail 
