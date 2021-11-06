@@ -1,0 +1,65 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema",
+    "type": "object",
+    "required": ["hosts"],
+    "additionalProperties": false,
+    "properties": {
+        "hosts": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                    "hostname": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "checks": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "required": [
+                                "name",
+                                "description",
+                                "type",
+                                "wait_time",
+                                "attempts"
+                            ],
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "type": "string"
+                                },
+                                "type": {
+                                    "type": "string",
+                                    "enum": [
+                                        "tcp",
+                                        "icmp"
+                                    ]
+                                },
+                                "wait_time": {
+                                    "type": "number"
+                                },
+                                "attempts": {
+                                    "type": "number"
+                                },
+                                "port": {
+                                    "type": "number"
+                                }
+                            }
+                        }
+                    }
+                },
+                "required": [
+                    "hostname",
+                    "description",
+                    "checks"
+                ]
+            }
+        }
+    }
+}

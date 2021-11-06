@@ -3,8 +3,9 @@ import os
 import smtplib
 import ssl
 import logging
+import json, jsonschema
 from configparser import ConfigParser
-
+from host import Host
 
 def ping(hostname: str) -> bool:
     """Send ICMP packet to server
@@ -67,10 +68,57 @@ def send_mail(subject: str, message: str):
 
     with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
         try:
+            #Logging in to Gmail account
             server.login(mail_config['SENDER'], mail_config['PASSWORD'])
+            #Sending email
             server.sendmail(mail_config['SENDER'], mail_config['RECEIVER'],
                     f"Subject: {subject} \n{message}\n\n Monitor.ido")
 
         except smtplib.SMTPAuthenticationError() as e:
             logging.error("Authentication to SMTP server failed, please check your config file")
         
+def load_data(filepath) -> list:
+    """Loading data from json file to create a hosts list
+
+    Args:
+        filepath (str): path to json data file.
+
+    Returns:
+        list: List of Hosts 
+    """
+    hosts = []
+
+    file = open(filepath, 'r')
+    data = json.load(file)
+    file.close()
+    
+    if vaildate_json(data):
+        # creating a host object for each one in json file
+        for host in data['hosts']:
+            hosts.append(Host(host))
+        return hosts
+    return None
+
+def vaildate_json(jsonData: dict) -> bool:
+    """validating the data json to prevent errors in run time
+
+    Using JSON schema, checks the validity of the JSON file.
+    If file is not valid, return False
+
+    Args:
+        jsonData (dict): data from JSON file as dictionary
+
+    Returns:
+        bool: Returns True if Json is valid
+    """
+    #Loading schema file
+    schema_file = open("schema.json", 'r')
+    schema = json.load(schema_file)
+    schema_file.close()
+
+    try:
+        jsonschema.validate(jsonData,schema)
+    except jsonschema.exceptions.ValidationError as err:
+        logging.error(err)
+        return False
+    return True
