@@ -42,7 +42,7 @@ class Check:
                     self.count += 1
                     if self.count > self.attempts:
                         logging.error("{} status changed to down, please check {}".format(self.name, self.hostname))
-                        utils.send_mail("{} is down".format(self.name),"{} failed 5 times, please check {}".format(self.name, self.hostname))
+                        utils.send_alert("{} is down".format(self.name),"{} failed 5 times, please check {}".format(self.name, self.hostname))
                         self.up = False
                         self.count = 0
                 time.sleep(self.wait_time)
@@ -52,7 +52,7 @@ class Check:
                     self.count += 1
                     if self.count > self.attempts:
                         logging.error("{} status changed to up".format(self.name))
-                        utils.send_mail("{} is up".format(self.name),"{} succeeded 5 times".format(self.name, self.hostname))
+                        utils.send_alert("{} is up".format(self.name),"{} succeeded 5 times".format(self.name, self.hostname))
                         self.up = True
                         self.count = 0
                 else:

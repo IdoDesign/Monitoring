@@ -54,6 +54,20 @@ def tcp_ping(hostname: str, port: int) -> bool:
     finally:
         sock.close()
 
+def send_alert(subject: str, message: str):
+    """Sends alerts to the user
+
+    Sends alerts based on user configuration file, Mail, PushSafer or both.
+
+    Args:
+        subject (str): alert subject
+        message (str): alert message
+    """
+    if config['Mail']['SENDER']:
+        send_mail(subject, message)
+    if config['PUSH_SAFER']['PUSH_API_KEY']:
+        send_notification(subject, message)
+
 def send_mail(subject: str, message: str):
     """Sends plain text e-mail 
 
