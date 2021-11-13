@@ -4,3 +4,17 @@
 1. create a data json file or edit example.json
 2. Change config.ini file
 3. run app.py with root privleges
+
+## Integrate PushSafer Notifications
+1. Create a user at pushsafer.com
+2. Copy and paste the API key in config.ini file:
+   ```
+    #PushSafer API configurations 
+    [PUSH_SAFER]
+    PUSH_URL= https://www.pushsafer.com
+    #Enter your PushSafer API key
+    PUSH_API_KEY= API_KEY_HERE
+    #Enter your icon file path
+    PUSH_ICON= logo.png
+    ```
+3. Add a device to pushsafer
