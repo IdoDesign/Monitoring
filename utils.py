@@ -5,7 +5,13 @@ import ssl
 import logging
 import json, jsonschema
 from configparser import ConfigParser
+from urllib.parse import urlencode
+from urllib.request import Request, urlopen
+import base64
 from host import Host
+
+config = ConfigParser()
+config.read('config.ini')
 
 def ping(hostname: str) -> bool:
     """Send ICMP packet to server
@@ -55,8 +61,6 @@ def send_mail(subject: str, message: str):
         subject (str): Subject of Email
         message (str): The message of email
     """
-    config = ConfigParser()
-    config.read('config.ini')
     mail_config = config['MAIL']
 
     port = 465  # For SSL
@@ -74,7 +78,35 @@ def send_mail(subject: str, message: str):
 
         except smtplib.SMTPAuthenticationError() as e:
             logging.error("Authentication to SMTP server failed, please check your config file")
-        
+
+def send_notification(subject: str, message: str):
+    """Sends notificaetions with PushSafer API
+
+    Args:
+        subject (str): Subject of the notification
+        message (str): The message in the notification
+    """
+    push_config = config['PUSH_SAFER']
+    image = open(push_config['PUSH_ICON'], 'rb')
+    image_read = image.read()
+    image1 = base64.encodebytes(image_read)
+    url = '{}/api'.format(push_config['PUSH_URL'])
+    post_fields = {
+        "t" : subject,
+        "m" : message,
+        "v" : 3,
+        "i" : 33,
+        "c" : '#FF0000',
+        "d" : 'a',
+        "u" : push_config['PUSH_URL'],
+        "ut": 'Open Pushsafer',
+        "k" : push_config['PUSH_API_KEY'],
+        "p" : 'data:image/png;base64,'+str(image1.decode('ascii'))
+    }
+    request = Request(url, urlencode(post_fields).encode())
+    json = urlopen(request).read().decode()
+    print(json)
+
 def load_data(filepath) -> list:
     """Loading data from json file to create a hosts list
 
