@@ -63,7 +63,7 @@ def send_alert(subject: str, message: str):
         subject (str): alert subject
         message (str): alert message
     """
-    if config['Mail']['SENDER']:
+    if config['MAIL']['SENDER']:
         send_mail(subject, message)
     if config['PUSH_SAFER']['PUSH_API_KEY']:
         send_notification(subject, message)
