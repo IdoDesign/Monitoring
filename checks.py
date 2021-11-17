@@ -10,17 +10,17 @@ class Check:
         description (str): Describes the check and it's purpose
         hostname (str): The hostname the check is refrering
         wait_time (int): Time in seconds between Checks
-        attempts (int): Number of attempts before changing status
+        max_attempts (int): Number of maximum attempts before changing status
 
     """
     
-    def __init__(self, name: str, description: str, hostname: str, wait_time: int, attempts: int):
+    def __init__(self, name: str, description: str, hostname: str, wait_time: int, max_attempts: int):
         """Creates a simple check Host"""
         self.name = name
         self.description = description
         self.hostname = hostname
         self.wait_time = wait_time
-        self.attempts = attempts
+        self.max_attempts = max_attempts
         self.up = True
         self.count = 0
 
@@ -40,7 +40,7 @@ class Check:
                     self.count = 0
                 else:
                     self.count += 1
-                    if self.count > self.attempts:
+                    if self.count > self.max_attempts:
                         logging.error("{} status changed to down, please check {}".format(self.name, self.hostname))
                         utils.send_alert("{} is down".format(self.name),"{} failed 5 times, please check {}".format(self.name, self.hostname))
                         self.up = False
@@ -50,7 +50,7 @@ class Check:
             if not self.up:
                 if self.single_check():
                     self.count += 1
-                    if self.count > self.attempts:
+                    if self.count > self.max_attempts:
                         logging.error("{} status changed to up".format(self.name))
                         utils.send_alert("{} is up".format(self.name),"{} succeeded 5 times".format(self.name, self.hostname))
                         self.up = True
@@ -68,8 +68,8 @@ class TCP_Check(Check):
         port (int): The tcp port number
 
     """
-    def __init__(self, name: str, description: str, hostname: str, wait_time: int, attempts: int, port: int):
-        super().__init__(name, description, hostname, wait_time, attempts)
+    def __init__(self, name: str, description: str, hostname: str, wait_time: int, max_attempts: int, port: int):
+        super().__init__(name, description, hostname, wait_time, max_attempts)
         self.type = 'tcp'
         self.port = port
 
@@ -83,8 +83,8 @@ class ICMP_Check(Check):
         type (str): Indicate that check is of type 'icmp'
 
     """
-    def __init__(self, name: str, description: str, hostname:str,  wait_time: int, attempts:int):
-        super().__init__(name, description, hostname, wait_time, attempts)
+    def __init__(self, name: str, description: str, hostname:str,  wait_time: int, max_attempts:int):
+        super().__init__(name, description, hostname, wait_time, max_attempts)
         self.type = 'icmp'
 
     def single_check(self) -> bool:

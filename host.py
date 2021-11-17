@@ -31,13 +31,13 @@ class Host:
 
             if check["type"] == 'tcp':
                 self.checks.append(TCP_Check(
-                    check["name"], check["description"], self.hostname, check["wait_time"], check['attempts'], check["port"]))
+                    check["name"], check["description"], self.hostname, check["wait_time"], check['max_attempts'], check["port"]))
 
             elif check["type"] == 'icmp':
                 self.checks.append(ICMP_Check(
-                    check["name"], check["description"], self.hostname, check["wait_time"], check['attempts']))
+                    check["name"], check["description"], self.hostname, check["wait_time"], check['max_attempts']))
 
-    def add_check(self, name: str, description: str, check_type: str, wait_time: int, attempts: int, port: int = None):
+    def add_check(self, name: str, description: str, check_type: str, wait_time: int, max_attempts: int, port: int = None):
         """Adds a check to the check list of the host
 
         Args:
@@ -45,7 +45,7 @@ class Host:
             description (str): The check's description' or purpose
             check_type (str): tcp or udp
             wait_time (int): Time between checks, in seconds
-            attempts (int): Number of attempts before changing status
+            max_attempts (int): Number of max_attempts before changing status
             port (int, optional): Port number for tcp checks. Defaults to None.
         """
 

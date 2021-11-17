@@ -25,7 +25,7 @@
                                 "description",
                                 "type",
                                 "wait_time",
-                                "attempts"
+                                "max_attempts"
                             ],
                             "properties": {
                                 "name": {
@@ -44,7 +44,7 @@
                                 "wait_time": {
                                     "type": "number"
                                 },
-                                "attempts": {
+                                "max_attempts": {
                                     "type": "number"
                                 },
                                 "port": {

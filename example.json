@@ -9,14 +9,14 @@
                     "description": "ping truenas server",
                     "type": "icmp",
                     "wait_time": 1,
-                    "attempts": 5
+                    "max_attempts": 5
                 },
                 {
                     "name": "HTTPS TrueNAS",
                     "description": "check https avaylability for TrueNAS",
                     "type": "tcp",
                     "wait_time": 5,
-                    "attempts": 5,
+                    "max_attempts": 5,
                     "port": 443
                 },
                 {
@@ -24,7 +24,7 @@
                     "description": "check rsync listener at FreeNAS",
                     "type": "tcp",
                     "wait_time": 2,
-                    "attempts": 5,
+                    "max_attempts": 5,
                     "port": 873
                 }
             ]
@@ -38,7 +38,7 @@
                     "description": "ping Unifi Dream Machine",
                     "type": "icmp",
                     "wait_time": 1,
-                    "attempts": 5
+                    "max_attempts": 5
                 }
             ]
         }
