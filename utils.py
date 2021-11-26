@@ -7,6 +7,7 @@ import json, jsonschema
 from configparser import ConfigParser
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
+import requests
 import base64
 from host import Host
 
@@ -117,9 +118,11 @@ def send_notification(subject: str, message: str):
         "k" : push_config['PUSH_API_KEY'],
         "p" : 'data:image/png;base64,'+str(image1.decode('ascii'))
     }
-    request = Request(url, urlencode(post_fields).encode())
-    json = urlopen(request).read().decode()
-    print(json)
+    try:  
+        r = requests.post(url, data=post_fields)
+        logging.info("Notification was sent succsessfully to PushSafer API, response:{}".format(r.text))
+    except requests.exceptions.ConnectionError as err:
+        logging.error("Failed to send notification to PushSafer")
 
 def load_data(filepath) -> list:
     """Loading data from json file to create a hosts list
