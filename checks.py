@@ -21,9 +21,15 @@ class Check:
         self.hostname = hostname
         self.wait_time = wait_time
         self.max_attempts = max_attempts
-        self.up = True
+        self.is_up = True
         self.count = 0
 
+    def change_status(self):
+        """Changes the status of the check"""
+
+        self.is_up = not self.is_up
+        self.count = 0
+    
     def check(self):
         """Checks if the hostname is avaylable
         
@@ -35,7 +41,7 @@ class Check:
         logging.info(f"Started monitoring {self.name}")
 
         while True:
-            if self.up:
+            if self.is_up:
                 if self.single_check():
                     self.count = 0
                 else:
@@ -43,18 +49,17 @@ class Check:
                     if self.count > self.max_attempts:
                         logging.error("{} status changed to down, please check {}".format(self.name, self.hostname))
                         utils.send_alert("{} is down".format(self.name),"{} failed 5 times, please check {}".format(self.name, self.hostname))
-                        self.up = False
-                        self.count = 0
+                        self.change_status()
+                        
                 time.sleep(self.wait_time)
             
-            if not self.up:
+            if not self.is_up:
                 if self.single_check():
                     self.count += 1
                     if self.count > self.max_attempts:
                         logging.error("{} status changed to up".format(self.name))
                         utils.send_alert("{} is up".format(self.name),"{} succeeded 5 times".format(self.name, self.hostname))
-                        self.up = True
-                        self.count = 0
+                        self.change_status()
                 else:
                     self.count = 0
                    
