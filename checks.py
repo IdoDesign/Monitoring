@@ -2,6 +2,9 @@ import logging
 import time
 import utils
 
+from base import Session
+from heartbeat import Heartbeat
+
 class Check:
     """Check is a simple class that represent one check for one host
 
@@ -42,7 +45,7 @@ class Check:
 
         while True:
             if self.is_up:
-                if self.single_check():
+                if self.heartbeat():
                     self.count = 0
                 else:
                     self.count += 1
@@ -50,11 +53,10 @@ class Check:
                         logging.error("{} status changed to down, please check {}".format(self.name, self.hostname))
                         utils.send_alert("{} is down".format(self.name),"{} failed 5 times, please check {}".format(self.name, self.hostname))
                         self.change_status()
-                        
                 time.sleep(self.wait_time)
             
             if not self.is_up:
-                if self.single_check():
+                if self.heartbeat():
                     self.count += 1
                     if self.count > self.max_attempts:
                         logging.error("{} status changed to up".format(self.name))
@@ -64,7 +66,21 @@ class Check:
                     self.count = 0
                    
                 time.sleep(self.wait_time)
-  
+    
+    def heartbeat(self) -> bool:
+        """Calls for a heartbeat check and saves result to DB"""
+        
+        result = self.single_check()
+        
+        hb = Heartbeat(self.name, self.hostname, result)
+        
+        session = Session()
+        session.add(hb)
+        session.commit()
+        session.close()
+        
+        return result
+
 class TCP_Check(Check):
     """A TCP Check
 

@@ -3,7 +3,7 @@ import threading
 import logging
 import utils
 from configparser import ConfigParser
-
+from base import engine, Base
 
 def main(filepath):
     FORMAT = '%(asctime)s - [%(levelname)s] - %(message)s'
@@ -22,6 +22,7 @@ def main(filepath):
             logging.info("Started monitoring script")
             threading.Thread(target=host.check_thereaded).start()
 
+Base.metadata.create_all(engine)
 
 if __name__ == "__main__":
     config = ConfigParser()
