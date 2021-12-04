@@ -1,6 +1,7 @@
 import threading, logging
+from sqlalchemy import select
 from checks import *
-
+from base import Session
 
 class Host:
     """Host class that represent one host with one IP address
@@ -62,5 +63,8 @@ class Host:
 
     def check_thereaded(self):
         logging.info(f"Started monitoring {self.hostname}")
-        for check in self.checks:
+        session = Session()
+        result = session.execute(select(Check).where(Check.hostname == self.hostname))
+        checks = result.scalars().all()
+        for check in checks:
             threading.Thread(target=check.check).start()

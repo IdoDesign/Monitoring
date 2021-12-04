@@ -3,7 +3,7 @@ import threading
 import logging
 import utils
 from configparser import ConfigParser
-from base import engine, Base
+from base import Session, engine, Base
 
 def main(filepath):
     FORMAT = '%(asctime)s - [%(levelname)s] - %(message)s'
@@ -17,6 +17,14 @@ def main(filepath):
     
     # creating a thread for each host
     hosts = utils.load_data(filepath)
+    logging.info("Started monitoring script")
+    for host in hosts:
+        for check in host.checks:
+                session = Session()
+                session.add(check)
+                session.commit()
+                session.close()
+    logging.info("Finished adding checks to DB")
     if hosts:
         for host in hosts:
             logging.info("Started monitoring script")
