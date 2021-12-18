@@ -5,8 +5,6 @@ import ssl
 import logging
 import json, jsonschema
 from configparser import ConfigParser
-from urllib.parse import urlencode
-from urllib.request import Request, urlopen
 import requests
 import base64
 from host import Host
