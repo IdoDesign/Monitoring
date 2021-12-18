@@ -53,7 +53,7 @@ def tcp_ping(hostname: str, port: int) -> bool:
     finally:
         sock.close()
 
-def send_alert(subject: str, message: str):
+def send_alert(subject: str, message: str, is_up: bool):
     """Sends alerts to the user
 
     Sends alerts based on user configuration file, Mail, PushSafer or both.
@@ -65,7 +65,7 @@ def send_alert(subject: str, message: str):
     if config['MAIL']['SENDER']:
         send_mail(subject, message)
     if config['PUSH_SAFER']['PUSH_API_KEY']:
-        send_notification(subject, message)
+        send_notification(subject, message, is_up)
 
 def send_mail(subject: str, message: str):
     """Sends plain text e-mail 
@@ -92,7 +92,7 @@ def send_mail(subject: str, message: str):
         except smtplib.SMTPAuthenticationError() as e:
             logging.error("Authentication to SMTP server failed, please check your config file")
 
-def send_notification(subject: str, message: str):
+def send_notification(subject: str, message: str, is_up: bool):
     """Sends notificaetions with PushSafer API
 
     Args:
@@ -100,7 +100,8 @@ def send_notification(subject: str, message: str):
         message (str): The message in the notification
     """
     push_config = config['PUSH_SAFER']
-    image = open(push_config['PUSH_ICON'], 'rb')
+    image_path = "icons/green_tick.png" if is_up  else "icons/Warning.png"
+    image = open(image_path, 'rb')
     image_read = image.read()
     image1 = base64.encodebytes(image_read)
     url = '{}/api'.format(push_config['PUSH_URL'])

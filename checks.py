@@ -79,7 +79,7 @@ class Check(Base):
                         logging.error("{} status changed to down, please check {}".format(
                             self.name, self.hostname))
                         utils.send_alert("{} is down".format(
-                            self.name), "{} failed 5 times, please check {}".format(self.name, self.hostname))
+                            self.name), "{} failed 5 times, please check {}".format(self.name, self.hostname), False)
                         self.change_status()
                 time.sleep(self.wait_time)
 
@@ -88,7 +88,7 @@ class Check(Base):
                     self.count += 1
                     if self.count > self.max_attempts:
                         logging.error("{} status changed to up".format(self.name))
-                        utils.send_alert("{} is up".format(self.name), "{} succeeded 5 times".format(self.name, self.hostname))
+                        utils.send_alert("{} is up".format(self.name), "{} succeeded 5 times".format(self.name, self.hostname), True)
                         self.change_status()
                 else:
                     self.count = 0
