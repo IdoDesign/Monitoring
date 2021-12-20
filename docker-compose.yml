@@ -10,6 +10,11 @@ services:
     env_file:
       - ./.env.db
 
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      
 volumes:
   postgres_data:
 
