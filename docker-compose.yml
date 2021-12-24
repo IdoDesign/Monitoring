@@ -12,7 +12,7 @@ services:
 
   app:
     build:
-      context: .
+      context: ./services/app/
       dockerfile: Dockerfile
     env_file:
       - ./.env.db

@@ -7,7 +7,7 @@ from contextlib import contextmanager
 from sqlalchemy import Column, String, Boolean, Integer, update
 
 from base import Base, Session
-from heartbeat import Heartbeat
+from models.heartbeat import Heartbeat
 
 class Check(Base):
     """Check is a simple class that represent one check for one host

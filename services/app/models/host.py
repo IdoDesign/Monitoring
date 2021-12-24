@@ -1,6 +1,6 @@
 import threading, logging
 from sqlalchemy import select
-from checks import *
+from models.checks import Check, ICMP_Check, TCP_Check
 from base import Session
 
 class Host:

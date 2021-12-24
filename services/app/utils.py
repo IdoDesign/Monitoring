@@ -7,7 +7,7 @@ import json, jsonschema
 from configparser import ConfigParser
 import requests
 import base64
-from host import Host
+from models.host import Host
 
 config = ConfigParser()
 config.read('config.ini')
