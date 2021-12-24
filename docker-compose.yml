@@ -1,7 +1,7 @@
 version: '3.7'
 
 services:
-  database:
+  db:
     image: postgres:12-alpine
     ports:
       - '5432:5432'
@@ -17,7 +17,7 @@ services:
     env_file:
       - ./.env.db
     depends_on:
-      - "database"
+      - "db"
       
 volumes:
   postgres_data:
