@@ -1,4 +1,3 @@
-import json, jsonschema
 import threading
 import logging
 import utils

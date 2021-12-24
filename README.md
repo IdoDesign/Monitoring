@@ -1,9 +1,10 @@
 # Monitoring
 
 ## Steps
-1. create a data json file or edit example.json
-2. Change config.ini file
-3. run app.py with root privleges
+1. Create a data.json file or edit example.json in /services/app/ directory
+2. Edit config.ini file
+3. Edit .env.db and change user details
+4. Run `docker compose up -d --build`
 
 ## Integrate PushSafer Notifications
 1. Create a user at pushsafer.com
