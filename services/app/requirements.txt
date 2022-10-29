@@ -2,3 +2,4 @@ jsonschema==3.2.0
 requests==2.22.0
 SQLAlchemy==1.4.27
 psycopg2-binary==2.9.2
+urllib3>=1.26.5 # not directly required, pinned by Snyk to avoid a vulnerability
